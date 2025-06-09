@@ -1,0 +1,24 @@
+target_lumi = 137000  # in /pb
+
+samples = [
+    {
+        "name": "DYJets",
+        "id": 1,
+        "xsec": 6077.22,
+        "nevents": 1000000,
+        "files": [
+            "/eos/user/Y/YOURUSER/HinvInput/DYJets_1.root",
+            "/eos/user/Y/YOURUSER/HinvInput/DYJets_2.root"
+        ]
+    },
+    {
+        "name": "TTbar",
+        "id": 2,
+        "xsec": 831.76,
+        "nevents": 500000,
+        "files": [
+            "/eos/user/Y/YOURUSER/HinvInput/TTbar_1.root"
+        ]
+    }
+]
+

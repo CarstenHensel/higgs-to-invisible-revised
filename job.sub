@@ -1,0 +1,11 @@
+executable = job.sh
+arguments = $(ProcID) $(Weight) "$(InputFiles)" $(OutFile)
+
+output = logs/job_$(ProcID)_$(ClusterId)_$(ProcId).out
+error  = logs/job_$(ProcID)_$(ClusterId)_$(ProcId).err
+log    = logs/job_$(ProcID)_$(ClusterId)_$(ProcId).log
+
+should_transfer_files = NO
++JobFlavour = "workday"
+
+queue ProcID, Weight, InputFiles, OutFile from jobs.txt
