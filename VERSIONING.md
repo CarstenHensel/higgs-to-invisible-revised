@@ -10,7 +10,7 @@ vMAJOR.MINOR.PATCH[-status]
 	- -status (optional) → Development state:
 	- -stable → End-to-end analysis chain runs successfully.
 	- -wip → Work in progress, partial functionality.
-- -broken → Known non-working but tagged for historical purposes.
+	- -broken → Known non-working but tagged for historical purposes.
 
 # Tagging Guidelines
 - __Tag stable milestones__ that you may need to reproduce (e.g. for a presentation, note, or internal report).
