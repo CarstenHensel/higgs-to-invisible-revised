@@ -43,6 +43,24 @@ StatusCode HtoInvAlg::initialize() {
 }
 
 StatusCode HtoInvAlg::execute(const EventContext& event) const {
+  //code block to dump event header
+  const auto* headers = m_eventHeader.get();
+  if (!headers || headers->empty()) {
+    debug() << "No EventHeader found" << endmsg;
+    return StatusCode::SUCCESS;
+  }
+
+  const auto& header = headers->at(0);  // one per event
+  info() << "=== Event Header ===" << endmsg;
+  info() << "Run:        " << header.getRunNumber() << endmsg;
+  info() << "Event:      " << header.getEventNumber() << endmsg;
+  info() << "Timestamp:  " << header.getTimeStamp() << endmsg;
+  info() << "Weight:     " << header.getWeight() << endmsg;
+
+
+  //end code block to dump envent header
+	
+	
   m_event_counter += 1;
 
   const auto* isoLeptonColl = m_isolatedLeptonsCollHandle.get();

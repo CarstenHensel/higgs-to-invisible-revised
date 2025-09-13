@@ -1,4 +1,6 @@
-from samples_signal import samples, target_lumi
+#from samples_signal import samples, target_lumi
+from samples_background import samples, target_lumi
+
 import json
 import subprocess
 

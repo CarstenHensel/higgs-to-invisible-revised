@@ -122,6 +122,12 @@ private:
   mutable DataHandle<podio::UserDataCollection<float>> m_outMET{"MET", Gaudi::DataHandle::Writer, this};
 
 
+  // addiing some code to extract information from the event header
+  mutable DataHandle<edm4hep::EventHeaderCollection> m_eventHeader{
+      "EventHeader", Gaudi::DataHandle::Reader, this};
+
+
+
   Gaudi::Property<std::vector<std::string>> m_outputs{this, "Outputs", {}, "Output collection names"};
 
   mutable double luminosity_weight;

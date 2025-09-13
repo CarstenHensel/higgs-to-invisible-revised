@@ -7,9 +7,11 @@ samples = [
         "xsec": 6077.22,
         "nevents": 600,
         "files": [
-            "/eos/experiment/clicdp/data/user/l/lreichen/miniDST/2f/2f_leptonic/l5_o1/rv02-02.sv02-02.mILD_l5_o1_v02.E250-SetA.I500006.P2f_z_l.eL.pR.n199.d_dstm_15457_401_mini-DST.edm4hep.root",
-            "/eos/experiment/clicdp/data/user/l/lreichen/miniDST/2f/2f_leptonic/l5_o1/rv02-02.sv02-02.mILD_l5_o1_v02.E250-SetA.I500006.P2f_z_l.eL.pR.n199.d_dstm_15457_405_mini-DST.edm4hep.root",
-            "/eos/experiment/clicdp/data/user/l/lreichen/miniDST/2f/2f_leptonic/l5_o1/rv02-02.sv02-02.mILD_l5_o1_v02.E250-SetA.I500006.P2f_z_l.eL.pR.n199.d_dstm_15457_406_mini-DST.edm4hep.root"
+            "/afs/cern.ch/user/c/chensel/cernbox/ILC/HtoInv/MC/MC_test/edm4hep/rv02-02-01.sv02-02.mILD_l5_o2_v02.E250-SetA.I500078.P4f_zznu_sl.eL.pR.n000_001.d_dst_00015656_146.root",
+            "/afs/cern.ch/user/c/chensel/cernbox/ILC/HtoInv/MC/MC_test/edm4hep/rv02-02-01.sv02-02.mILD_l5_o2_v02.E250-SetA.I500078.P4f_zznu_sl.eL.pR.n000_002.d_dst_00015656_70.root",
+            "/afs/cern.ch/user/c/chensel/cernbox/ILC/HtoInv/MC/MC_test/edm4hep/rv02-02-01.sv02-02.mILD_l5_o2_v02.E250-SetA.I500078.P4f_zznu_sl.eL.pR.n000_003.d_dst_00015656_201.root",
+            "/afs/cern.ch/user/c/chensel/cernbox/ILC/HtoInv/MC/MC_test/edm4hep/rv02-02-01.sv02-02.mILD_l5_o2_v02.E250-SetA.I500078.P4f_zznu_sl.eL.pR.n000_004.d_dst_00015656_167.root",
+            "/afs/cern.ch/user/c/chensel/cernbox/ILC/HtoInv/MC/MC_test/edm4hep/rv02-02-01.sv02-02.mILD_l5_o2_v02.E250-SetA.I500078.P4f_zznu_sl.eL.pR.n000_005.d_dst_00015656_91.root"
         ]
     },
 ]
