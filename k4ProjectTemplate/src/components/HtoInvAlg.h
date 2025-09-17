@@ -131,7 +131,11 @@ private:
   Gaudi::Property<std::vector<std::string>> m_outputs{this, "Outputs", {}, "Output collection names"};
 
   mutable double luminosity_weight;
-  mutable int process_id;
+
+  mutable int processID;
+  mutable int n_events_generated;
+  mutable float targetLumi;
+  mutable float cross_section;
 
   mutable int m_event_counter = 0;	
 

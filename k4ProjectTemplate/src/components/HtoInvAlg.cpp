@@ -26,8 +26,10 @@ HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc)
   declareProperty("Outputs", m_outMET, "Name of the output MET collection");
 
 
-  declareProperty("lumi_weight", luminosity_weight,"Lumi_weight");
-  declareProperty("process_id", process_id,"process_id");
+  declareProperty("cross_section", cross_section,"cross_section");
+  declareProperty("processID", processID,"processID");
+  declareProperty("n_events_generated", n_events_generated,"n_events_generated");
+  declareProperty("targetLumi", targetLumi,"targetLumi");
 
   std::string filename = "output_tree.root";
   outFile = new TFile(filename.c_str(), "RECREATE");
