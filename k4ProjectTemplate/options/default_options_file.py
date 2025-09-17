@@ -1,15 +1,23 @@
 from Gaudi.Configuration import *
-import os
 
 
-# INSERT_CUSTOM_CONFIG_HERE
+
+path = "/afs/cern.ch/user/c/chensel/ILD/lcio_edm4hep/edm4hep/"
+files = [path + "Dirac-Dst-E250-e2e2h_inv.eL.pR_bg-00001.root"]
+
+
 
 from Configurables import k4DataSvc
 from Configurables import MarlinProcessorWrapper, EDM4hep2LcioTool, Lcio2EDM4hepTool
 
-
 evtSvc = k4DataSvc('EventDataSvc')
-evtSvc.inputs = input_files
+# muons:
+#evtSvc.input = '/afs/cern.ch/user/c/chensel/ILD/lcio_edm4hep/edm4hep/Dirac-Dst-E250-e2e2h_inv.eL.pR_bg-00001.root'
+evtSvc.inputs = files
+# hadrons:
+#evtSvc.input = '/afs/cern.ch/user/c/chensel/ILD/lcio_edm4hep/edm4hep/Dirac-Dst-E250-qqh_zz_4n.eR.pL-00001.root'
+# example file:
+#evtSvc.input = '/afs/cern.ch/user/c/chensel/ILD/lcio_edm4hep/edm4hep/rv02-02.sv02-02.mILD_l5_o1_v02.E250-SetA.I402003.Pe2e2h.eL.pR.n000.d_dstm_15089_0_edm4hep.root'
 
 from Configurables import PodioInput
 input = PodioInput("InputReader")
@@ -29,8 +37,9 @@ myalg.EventHeaderColl = 'EventHeader'
 myalg.MCParticleColl = 'MCParticlesSkimmed'
 
 # All values should be in compatible units
-myalg.lumi_weight = lumi_weight
-myalg.process_id = process_id
+myalg.luminosity = 1000.0  
+myalg.cross_section = 0.5
+myalg.n_events_generated = 100000
 myalg.Outputs = "MET"
 
 #myalg.MuonColl = 'Muons'
@@ -125,7 +134,7 @@ output.filename = 'tst.root'
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg=[input, MyIsolatedLeptonTaggingProcessor, MyLeptonPairing, myalg, treewriter, output],
                 EvtSel="NONE",
-                EvtMax=3,
-		        ExtSvc=[evtSvc],
-                OutputLevel=DEBUG,
+                EvtMax=200,
+		ExtSvc=[evtSvc],
+                OutputLevel=INFO,
                )
