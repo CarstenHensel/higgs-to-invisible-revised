@@ -30,6 +30,7 @@ HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc)
   declareProperty("processID", processID,"processID");
   declareProperty("n_events_generated", n_events_generated,"n_events_generated");
   declareProperty("targetLumi", targetLumi,"targetLumi");
+  declareProperty("processName", processName, "processName");
 
   std::string filename = "output_tree.root";
   outFile = new TFile(filename.c_str(), "RECREATE");

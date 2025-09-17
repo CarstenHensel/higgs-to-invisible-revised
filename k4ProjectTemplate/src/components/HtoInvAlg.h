@@ -137,6 +137,7 @@ private:
   mutable int n_events_generated;
   mutable float targetLumi;
   mutable float cross_section;
+  mutable std::string processName; 
 
   mutable int m_event_counter = 0;	
 
