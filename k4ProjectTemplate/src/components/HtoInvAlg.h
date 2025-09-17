@@ -55,6 +55,7 @@ public:
   mutable float sqrtS;
   mutable int channelType;  // 1 = leptonic Z, 2 = hadronic Z
   mutable int proc_id;
+  
 
 
   // Jets
