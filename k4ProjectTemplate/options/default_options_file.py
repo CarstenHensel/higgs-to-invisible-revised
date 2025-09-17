@@ -36,10 +36,6 @@ myalg.IsolatedLeptonsColl = 'IsolatedLeptons'
 myalg.EventHeaderColl = 'EventHeader'
 myalg.MCParticleColl = 'MCParticlesSkimmed'
 
-# All values should be in compatible units
-myalg.luminosity = 1000.0  
-myalg.cross_section = 0.5
-myalg.n_events_generated = 100000
 myalg.Outputs = "MET"
 
 #myalg.MuonColl = 'Muons'
