@@ -35,6 +35,8 @@ HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc)
   outFile = new TFile(filename.c_str(), "RECREATE");
   tree = new TTree("events", "Higgs to Invisible Analysis Tree");
   setupBranches();
+
+  lumiWeight = cross_section * targetLumi / n_events_generated;
 }
 
 HtoInvAlg::~HtoInvAlg() {}
@@ -64,10 +66,8 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
     runNumber = eventHeaderColl->at(0).getRunNumber();
     // sqrtS = eventHeaderColl->at(0).getEnergy();
     sqrtS = 250.0;
-    lumiWeight = luminosity_weight;
     proc_id = processID;
   }
-  lumiWeight = cross_section * targetLumi / n_events_generated;
 
   // calculate MET
   float sum_px = 0.0f;
