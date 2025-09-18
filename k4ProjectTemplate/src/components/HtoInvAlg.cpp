@@ -33,18 +33,23 @@ HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc)
   declareProperty("processName", processName, "processName");
   declareProperty("root_output_file", root_output_file, "root_output_file");
 
-  std::string filename = root_output_file;
-  outFile = new TFile(filename.c_str(), "RECREATE");
-  tree = new TTree("events", "Higgs to Invisible Analysis Tree");
-  setupBranches();
-
-  lumiWeight = cross_section * targetLumi / n_events_generated;
 }
 
 HtoInvAlg::~HtoInvAlg() {}
 
 StatusCode HtoInvAlg::initialize() {
   m_event_counter = 0;
+
+  std::cout << "FILENAME " << root_output_file << " read" << std::endl;
+
+  std::string filename = root_output_file;
+  std::cout << "TRYING to open file " << filename << std::endl;
+  outFile = new TFile(filename.c_str(), "RECREATE");
+  std::cout << "OUTPUT file " << filename << " opened" << std::endl;
+  tree = new TTree("events", "Higgs to Invisible Analysis Tree");
+  setupBranches();
+  lumiWeight = cross_section * targetLumi / n_events_generated;
+
   return StatusCode::SUCCESS;
 }
 
