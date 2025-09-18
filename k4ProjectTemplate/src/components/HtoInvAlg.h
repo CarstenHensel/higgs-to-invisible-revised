@@ -138,6 +138,7 @@ private:
   mutable float targetLumi;
   mutable float cross_section;
   mutable std::string processName; 
+  mutable std::string root_output_file;
 
   mutable int m_event_counter = 0;	
 

@@ -31,8 +31,9 @@ HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc)
   declareProperty("n_events_generated", n_events_generated,"n_events_generated");
   declareProperty("targetLumi", targetLumi,"targetLumi");
   declareProperty("processName", processName, "processName");
+  declareProperty("root_output_file", root_output_file, "root_output_file");
 
-  std::string filename = "output_tree.root";
+  std::string filename = root_output_file;
   outFile = new TFile(filename.c_str(), "RECREATE");
   tree = new TTree("events", "Higgs to Invisible Analysis Tree");
   setupBranches();
