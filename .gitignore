@@ -255,3 +255,5 @@ test/gaudi_opts/testConverterConstants.py
 *.tmp
 build/
 
+*.orig
+*.original
