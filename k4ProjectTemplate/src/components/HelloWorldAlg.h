@@ -39,7 +39,8 @@ public:
   /**  Finalize.
    *   @return status code
    */
-  StatusCode finalize() override;;
+  StatusCode finalize() override;
+  ;
 
 private:
   // member variable

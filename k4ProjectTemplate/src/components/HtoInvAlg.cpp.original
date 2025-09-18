@@ -1,7 +1,7 @@
 #include "HtoInvAlg.h"
 #include "GaudiKernel/MsgStream.h"
-#include <vector> 
-#include <TLorentzVector.h> 
+#include <vector>
+#include <TLorentzVector.h>
 #include "edm4hep/ReconstructedParticle.h"
 #include "edm4hep/Vector3d.h"
 
@@ -28,11 +28,11 @@ StatusCode HtoInvAlg::initialize() {
 }
 
 StatusCode HtoInvAlg::execute(const EventContext& event) const {
- 
- 
- 
+
+
+
  m_event_counter += 1;
- 
+
  const auto *isoLeptonColl = m_isolatedLeptonsCollHandle.get();
  const auto *recoColl = m_recoParticleCollHandle.get();
  const auto *eventHeaderColl = m_eventHeaderCollHandle.get();
@@ -44,21 +44,21 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
  //sqrtS = eventHeaderColl->at(0).getEnergy();
  sqrtS = 250.0;
  }
- 
- 
- 
+
+
+
  int muonsFound = 0;
  double sqrts = 250.0;
  std::vector <TLorentzVector> muons;
  std::vector <edm4hep::ReconstructedParticle> muonCandidates;
  TLorentzVector totalVisibleP4(0, 0, 0, 0);
- 
+
  for (const auto reco : *recoColl) {
 
  float energy = reco.getEnergy();
  TLorentzVector p4;
  p4.SetPxPyPzE(reco.getMomentum()[0], reco.getMomentum()[1], reco.getMomentum()[2], energy);
- totalVisibleP4 += p4; 
+ totalVisibleP4 += p4;
 
  if (std::abs(reco.getType()) == 13) {
  muonCandidates.push_back(reco);
@@ -76,12 +76,12 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
  nLeptons = muonsFound;
 
  if (nLeptons > 0) {
- for (int i = 0; i < nLeptons; i++) { 
+ for (int i = 0; i < nLeptons; i++) {
  	lep_pt[i] = muons[i].Pt();
  	lep_eta[i] = muons[i].Eta();
 	lep_phi[i] = muons[i].Phi();
 	lep_e[i] = muons[i].E();
-	lep_charge[i] = muonCandidates[i].getCharge();	
+	lep_charge[i] = muonCandidates[i].getCharge();
 }
 }
 
@@ -90,7 +90,7 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
  double dphi = TVector2::Phi_mpi_pi(muons[0].Phi() - muons[1].Phi());
  deltaPhi = dphi;
  acoplanarity = M_PI - std::abs(dphi);
- 
+
  dphi = TVector2::Phi_mpi_pi(muons[0].Phi() - muons[1].Phi());
  acoplanarity = M_PI - std::abs(dphi);
 
@@ -100,18 +100,18 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
  float deltaEta = muons[0].Eta() - muons[1].Eta();
  deltaR = std::sqrt(deltaEta * deltaEta + deltaPhi * deltaPhi);
 
- TLorentzVector dilepton_p4 = muons[0] + muons[1]; 
+ TLorentzVector dilepton_p4 = muons[0] + muons[1];
 
  dilepton_mass = dilepton_p4.M();
  dilepton_pt = dilepton_p4.Pt();
- 
- TLorentzVector initial_p4(0, 0, 0, sqrtS); 
+
+ TLorentzVector initial_p4(0, 0, 0, sqrtS);
  TLorentzVector recoil_p4 = initial_p4 - dilepton_p4;
  recoil_mass = recoil_p4.M();
  recoil_pt = recoil_p4.Pt();
  recoil_cosTheta = recoil_p4.CosTheta();
  }
- 
+
 // MC particles
  for (const auto& mc : *mcParticleColl) {
 	auto parents = mc.getParents();
@@ -122,7 +122,7 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
 	} else {
 		parentPDG = 0;
 }
-	 
+
 	TLorentzVector p4;
 	auto mom = mc.getMomentum();
         p4.SetPxPyPzE(mom.x, mom.y, mom.z, mc.getEnergy());
@@ -135,7 +135,7 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
 }
 
 StatusCode HtoInvAlg::finalize() {
- 
+
  if (outFile && tree) {
  outFile->cd();
  tree->Write();
@@ -144,7 +144,7 @@ StatusCode HtoInvAlg::finalize() {
  outFile = nullptr;
  tree = nullptr;
  }
- 
+
  return StatusCode::SUCCESS;
 }
 
@@ -154,8 +154,8 @@ void HtoInvAlg::setupBranches() {
  tree->Branch("eventNumber", &eventNumber, "eventNumber/I");
  tree->Branch("weight", &weight, "weight/F");
  tree->Branch("sqrtS", &sqrtS, "sqrtS/F");
- tree->Branch("channelType", &channelType, "channelType/I"); 
- 
+ tree->Branch("channelType", &channelType, "channelType/I");
+
  // Jets
  tree->Branch("nJets", &nJets, "nJets/I");
  tree->Branch("jet_pt", jet_pt, "jet_pt[nJets]/F");
@@ -163,8 +163,8 @@ void HtoInvAlg::setupBranches() {
  tree->Branch("jet_phi", jet_phi, "jet_phi[nJets]/F");
  tree->Branch("jet_e", jet_e, "jet_e[nJets]/F");
  tree->Branch("dijet_mass", &dijet_mass, "dijet_mass/F");
- tree->Branch("dijet_pt", &dijet_pt, "dijet_pt/F"); 
- 
+ tree->Branch("dijet_pt", &dijet_pt, "dijet_pt/F");
+
  // leptons
  tree->Branch("nLeptons", &nLeptons, "nLeptons/I");
  tree->Branch("lep_pt", lep_pt, "lep_pt[nLeptons]/F");
@@ -172,16 +172,16 @@ void HtoInvAlg::setupBranches() {
  tree->Branch("lep_phi", lep_phi, "lep_phi[nLeptons]/F");
  tree->Branch("lep_e", lep_e, "lep_e[nLeptons]/F");
  tree->Branch("lep_charge", lep_charge, "lep_charge[nLeptons]/I");
- 
+
  tree->Branch("dilepton_mass", &dilepton_mass, "dilepton_mass/F");
  tree->Branch("dilepton_pt", &dilepton_pt, "dilepton_pt/F");
- 
+
  tree->Branch("MET", &MET, "MET/F");
  tree->Branch("MET_phi", &MET_phi, "MET_phi/F");
  tree->Branch("recoil_mass", &recoil_mass, "recoil_mass/F");
  tree->Branch("recoil_pt", &recoil_pt, "recoil_pt/F");
- tree->Branch("recoil_cosTheta", &recoil_cosTheta, "recoil_cosTheta/F"); 
- 
+ tree->Branch("recoil_cosTheta", &recoil_cosTheta, "recoil_cosTheta/F");
+
  // kinematics
  tree->Branch("acoplanarity", &acoplanarity, "acoplanarity/F");
  tree->Branch("acollinearity", &acollinearity, "acollinearity/F");
@@ -189,8 +189,8 @@ void HtoInvAlg::setupBranches() {
  tree->Branch("deltaR", &deltaR, "deltaR/F");
  tree->Branch("visible_mass", &visible_mass, "visible_mass/F");
  tree->Branch("visible_energy", &visible_energy, "visible_energy/F");
- tree->Branch("visible_pt", &visible_pt, "visible_pt/F"); 
- 
+ tree->Branch("visible_pt", &visible_pt, "visible_pt/F");
+
  // MC truth
  tree->Branch("nMCParticles", &nMCParticles, "nMCParticles/I");
  tree->Branch("mc_pt", &mc_pt);
@@ -224,8 +224,8 @@ void HtoInvAlg::addMCParticle(float pt, float eta, float phi, float e,
 
 
 void HtoInvAlg::fillEvent() const {
- tree->Fill(); 
- 
+ tree->Fill();
+
  // Clear MC truth vectors
  mc_pt.clear();
  mc_eta.clear();

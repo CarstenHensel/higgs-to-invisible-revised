@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2020-2024 Key4hep-Project.
+ *
+ * This file is part of Key4hep.
+ * See https://key4hep.github.io/key4hep-doc/ for further info.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include <TLorentzVector.h>
 
 #include <vector>
@@ -6,33 +24,25 @@
 #include "HtoInvAlg.h"
 #include "edm4hep/ReconstructedParticle.h"
 #include "edm4hep/Vector3d.h"
-#include "podio/UserDataCollection.h"
 #include "podio/Frame.h"
-
+#include "podio/UserDataCollection.h"
 
 DECLARE_COMPONENT(HtoInvAlg)
 
-HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc)
-    : Gaudi::Algorithm(aName, aSvcLoc) {
-  declareProperty("RecoParticleColl", m_recoParticleCollHandle,
-                  "RecoParticle collection");
-  declareProperty("IsolatedLeptonsColl", m_isolatedLeptonsCollHandle,
-                  "Isolated Leptons collection");
-  declareProperty("EventHeaderColl", m_eventHeaderCollHandle,
-                  "Event Header collection");
-  declareProperty("MCParticleColl", m_mcParticleCollHandle,
-                  "MC Particle collection");
+HtoInvAlg::HtoInvAlg(const std::string& aName, ISvcLocator* aSvcLoc) : Gaudi::Algorithm(aName, aSvcLoc) {
+  declareProperty("RecoParticleColl", m_recoParticleCollHandle, "RecoParticle collection");
+  declareProperty("IsolatedLeptonsColl", m_isolatedLeptonsCollHandle, "Isolated Leptons collection");
+  declareProperty("EventHeaderColl", m_eventHeaderCollHandle, "Event Header collection");
+  declareProperty("MCParticleColl", m_mcParticleCollHandle, "MC Particle collection");
 
   declareProperty("Outputs", m_outMET, "Name of the output MET collection");
 
-
-  declareProperty("cross_section", cross_section,"cross_section");
-  declareProperty("processID", processID,"processID");
-  declareProperty("n_events_generated", n_events_generated,"n_events_generated");
-  declareProperty("targetLumi", targetLumi,"targetLumi");
+  declareProperty("cross_section", cross_section, "cross_section");
+  declareProperty("processID", processID, "processID");
+  declareProperty("n_events_generated", n_events_generated, "n_events_generated");
+  declareProperty("targetLumi", targetLumi, "targetLumi");
   declareProperty("processName", processName, "processName");
   declareProperty("root_output_file", root_output_file, "root_output_file");
-
 }
 
 HtoInvAlg::~HtoInvAlg() {}
@@ -54,8 +64,7 @@ StatusCode HtoInvAlg::initialize() {
 }
 
 StatusCode HtoInvAlg::execute(const EventContext& event) const {
-	
-	
+
   m_event_counter += 1;
 
   const auto* isoLeptonColl = m_isolatedLeptonsCollHandle.get();
@@ -63,10 +72,8 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
   const auto* eventHeaderColl = m_eventHeaderCollHandle.get();
   const auto* mcParticleColl = m_mcParticleCollHandle.get();
 
-
   auto userMET = m_outMET.createAndPut();
   userMET->push_back(50.0 + m_event_counter);
-
 
   if (eventHeaderColl && !eventHeaderColl->empty()) {
     eventNumber = eventHeaderColl->at(0).getEventNumber();
@@ -81,14 +88,14 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
   float sum_py = 0.0f;
 
   for (const auto p : *recoColl) {
-      sum_px += p.getMomentum().x;
-      sum_py += p.getMomentum().y;
+    sum_px += p.getMomentum().x;
+    sum_py += p.getMomentum().y;
   }
 
   float met_x = -sum_px;
   float met_y = -sum_py;
   MET = std::sqrt(met_x * met_x + met_y * met_y);
-  MET_phi = std::atan2(met_y, met_x); 
+  MET_phi = std::atan2(met_y, met_x);
 
   // look for muons
   int muonsFound = 0;
@@ -100,15 +107,13 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
   for (const auto reco : *recoColl) {
     float energy = reco.getEnergy();
     TLorentzVector p4;
-    p4.SetPxPyPzE(reco.getMomentum()[0], reco.getMomentum()[1],
-                  reco.getMomentum()[2], energy);
+    p4.SetPxPyPzE(reco.getMomentum()[0], reco.getMomentum()[1], reco.getMomentum()[2], energy);
     totalVisibleP4 += p4;
 
     if (std::abs(reco.getType()) == 13) {
       muonCandidates.push_back(reco);
       TLorentzVector muon = TLorentzVector();
-      muon.SetPxPyPzE(reco.getMomentum()[0], reco.getMomentum()[1],
-                      reco.getMomentum()[2], reco.getEnergy());
+      muon.SetPxPyPzE(reco.getMomentum()[0], reco.getMomentum()[1], reco.getMomentum()[2], reco.getEnergy());
       muons.push_back(muon);
       muonsFound++;
     }
@@ -135,8 +140,7 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
     deltaPhi = dphi;
     acoplanarity = M_PI - std::abs(dphi);
 
-    double angle =
-        muons[0].Vect().Angle(muons[1].Vect());  // returns angle in radians
+    double angle = muons[0].Vect().Angle(muons[1].Vect()); // returns angle in radians
     acollinearity = M_PI - angle;
 
     float deltaEta = muons[0].Eta() - muons[1].Eta();
@@ -159,7 +163,7 @@ StatusCode HtoInvAlg::execute(const EventContext& event) const {
     auto parents = mc.getParents();
     int parentPDG;
     if (!parents.empty()) {
-      const auto& parent = parents[0];  // if you just want the first parent
+      const auto& parent = parents[0]; // if you just want the first parent
       parentPDG = parent.getPDG();
     } else {
       parentPDG = 0;
@@ -243,14 +247,11 @@ void HtoInvAlg::setupBranches() {
   tree->Branch("mc_motherPdgId", &mc_motherPdgId);
 }
 
-void HtoInvAlg::addMCParticle(const TLorentzVector& p4, int pdgId, int status,
-                              int motherPdgId) const {
-  addMCParticle(p4.Pt(), p4.Eta(), p4.Phi(), p4.E(), pdgId, status,
-                motherPdgId);
+void HtoInvAlg::addMCParticle(const TLorentzVector& p4, int pdgId, int status, int motherPdgId) const {
+  addMCParticle(p4.Pt(), p4.Eta(), p4.Phi(), p4.E(), pdgId, status, motherPdgId);
 }
 
-void HtoInvAlg::addMCParticle(float pt, float eta, float phi, float e,
-                              int pdgId, int status, int motherPdgId) const {
+void HtoInvAlg::addMCParticle(float pt, float eta, float phi, float e, int pdgId, int status, int motherPdgId) const {
   mc_pt.push_back(pt);
   mc_eta.push_back(eta);
   mc_phi.push_back(phi);
@@ -272,5 +273,3 @@ void HtoInvAlg::fillEvent() const {
   mc_status.clear();
   mc_motherPdgId.clear();
 }
-
-
